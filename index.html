@@ -1,0 +1,441 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>社宅保溫計畫｜系列活動設計</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FBF9F3;
+    --ink:#1C2733;
+    --ink-2:#4A5764;
+    --line:#D9D3C4;
+    --see:#2F4F9E;   /* 看看 */
+    --hear:#8A3F6E;  /* 聽聽 */
+    --walk:#3E7C55;  /* 走走 */
+    --eat:#D8721E;   /* 吃吃 */
+    --smell:#1E7F82; /* 聞聞 */
+    --move:#C93F4A;  /* 動動 */
+    --sun:#F4C34A;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:"Noto Sans TC",system-ui,sans-serif;background:var(--paper);color:var(--ink);font-size:18px;line-height:1.7}
+  a{color:inherit}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+
+  /* ---------- hero ---------- */
+  .hero{padding:64px 0 40px;border-bottom:3px solid var(--ink)}
+  .hero .tag{display:inline-block;background:var(--ink);color:var(--paper);padding:6px 14px;font-weight:700;font-size:16px;border-radius:4px}
+  .hero h1{font-size:clamp(40px,7vw,84px);font-weight:900;line-height:1.05;letter-spacing:-0.02em;margin:20px 0 14px}
+  .hero p.lead{font-size:clamp(19px,2.2vw,24px);max-width:720px;color:var(--ink-2)}
+  .hero .meta{display:flex;flex-wrap:wrap;gap:12px 32px;margin-top:28px;font-size:17px}
+  .hero .meta b{font-weight:900}
+
+  /* ---------- principles ---------- */
+  section{padding:56px 0}
+  h2{font-size:clamp(28px,4vw,40px);font-weight:900;line-height:1.2;margin-bottom:10px}
+  .sub{color:var(--ink-2);font-size:19px;max-width:760px;margin-bottom:28px}
+  .rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px}
+  .rule{border-left:6px solid var(--sun);padding:6px 0 6px 18px}
+  .rule h3{font-size:22px;font-weight:900;margin-bottom:6px}
+  .rule p{font-size:17px;color:var(--ink-2)}
+
+  /* ---------- board ---------- */
+  .board-wrap{background:var(--ink);color:var(--paper);padding:56px 0}
+  .board-wrap h2{color:var(--sun)}
+  .board-wrap .sub{color:#C9CFD6}
+  .legend{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:22px}
+  .legend button,.filters button{font:inherit;font-weight:700;font-size:16px;border:2px solid transparent;border-radius:999px;padding:7px 16px;cursor:pointer;background:#2A3541;color:var(--paper);transition:transform .15s}
+  .legend button:hover,.filters button:hover{transform:translateY(-1px)}
+  .legend button[data-cat="看看"]{background:var(--see)}
+  .legend button[data-cat="聽聽"]{background:var(--hear)}
+  .legend button[data-cat="走走"]{background:var(--walk)}
+  .legend button[data-cat="吃吃"]{background:var(--eat)}
+  .legend button[data-cat="聞聞"]{background:var(--smell)}
+  .legend button[data-cat="動動"]{background:var(--move)}
+  .legend button.on,.filters button.on{border-color:var(--sun);box-shadow:0 0 0 3px rgba(244,195,74,.35)}
+  .board{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;overflow-x:auto}
+  .month{background:#26313D;border-radius:10px;padding:10px 8px;min-height:260px;cursor:pointer;border:2px solid transparent;transition:border-color .15s}
+  .month:hover,.month.on{border-color:var(--sun)}
+  .month .mh{font-weight:900;font-size:18px;text-align:center;margin-bottom:8px;color:var(--sun)}
+  .month .mh small{display:block;font-weight:500;font-size:13px;color:#C9CFD6}
+  .stick{display:block;font-size:13px;line-height:1.35;font-weight:700;padding:5px 7px;border-radius:6px;margin-bottom:5px;color:#fff;opacity:1;transition:opacity .2s}
+  .stick.dim{opacity:.18}
+  .stick[data-cat="看看"]{background:var(--see)}
+  .stick[data-cat="聽聽"]{background:var(--hear)}
+  .stick[data-cat="走走"]{background:var(--walk)}
+  .stick[data-cat="吃吃"]{background:var(--eat)}
+  .stick[data-cat="聞聞"]{background:var(--smell)}
+  .stick[data-cat="動動"]{background:var(--move)}
+  .rhythm{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-top:28px}
+  .rhythm div{background:#26313D;border-radius:10px;padding:16px 18px}
+  .rhythm b{display:block;color:var(--sun);font-size:19px;font-weight:900;margin-bottom:4px}
+  .rhythm p{font-size:16px;color:#E2E6EA}
+
+  /* ---------- cards ---------- */
+  .filters{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:24px}
+  .filters span{font-weight:700;margin-right:6px}
+  .filters button{background:#fff;color:var(--ink);border:2px solid var(--line)}
+  .filters button.on{background:var(--ink);color:#fff;border-color:var(--ink);box-shadow:none}
+  .count{color:var(--ink-2);font-size:16px;margin-left:auto}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:18px}
+  .card{background:#fff;border:2px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+  .card.hide{display:none}
+  .card .top{padding:14px 18px 10px;color:#fff;display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+  .card .top .m{font-weight:900;font-size:22px}
+  .card .top .c{font-weight:700;font-size:15px;opacity:.9}
+  .card[data-cat="看看"] .top{background:var(--see)}
+  .card[data-cat="聽聽"] .top{background:var(--hear)}
+  .card[data-cat="走走"] .top{background:var(--walk)}
+  .card[data-cat="吃吃"] .top{background:var(--eat)}
+  .card[data-cat="聞聞"] .top{background:var(--smell)}
+  .card[data-cat="動動"] .top{background:var(--move)}
+  .card .body{padding:16px 18px 18px;flex:1;display:flex;flex-direction:column;gap:10px}
+  .card h3{font-size:23px;font-weight:900;line-height:1.25}
+  .card .hook{font-size:17px;color:var(--ink-2)}
+  .card .roles{list-style:none;font-size:15.5px;border-top:1px dashed var(--line);padding-top:10px}
+  .card .roles li{padding:2px 0 2px 0}
+  .card .roles li b{display:inline-block;min-width:46px;font-weight:900}
+  .card .foot{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;padding-top:8px}
+  .chip{font-size:13.5px;font-weight:700;padding:3px 10px;border-radius:999px;background:#F1EDE2;color:var(--ink-2)}
+  .chip.aud{background:var(--sun);color:var(--ink)}
+  .chip.club{background:var(--ink);color:#fff}
+  .chip.lk{background:#FBE3E5;color:var(--move);border:1px solid var(--move)}
+  .chip.src{background:#E3EEFB;color:var(--see);border:1px solid var(--see)}
+  .empty{padding:40px;text-align:center;color:var(--ink-2);font-size:19px;display:none}
+
+  /* ---------- highlights ---------- */
+  .hl{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+  .hl article{background:#fff;border-radius:14px;padding:22px 24px;border-top:8px solid var(--sun)}
+  .hl h3{font-size:24px;font-weight:900;margin-bottom:8px;line-height:1.25}
+  .hl p{font-size:16.5px;color:var(--ink-2);margin-bottom:6px}
+  .hl p b{color:var(--ink)}
+
+  /* ---------- clubs path ---------- */
+  .path{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;counter-reset:step}
+  .path div{background:#fff;border:2px solid var(--ink);border-radius:12px;padding:18px;position:relative}
+  .path div::before{counter-increment:step;content:counter(step);position:absolute;top:-16px;left:14px;background:var(--sun);color:var(--ink);font-weight:900;font-size:18px;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;border:2px solid var(--ink)}
+  .path b{display:block;font-size:21px;font-weight:900;margin:6px 0 4px}
+  .path p{font-size:16px;color:var(--ink-2)}
+  table{width:100%;border-collapse:collapse;background:#fff;font-size:16.5px;margin-top:22px}
+  th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{background:#F1EDE2;font-weight:900}
+  .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+  .box{background:#fff;border-radius:14px;padding:22px 24px;border:2px solid var(--line)}
+  .box h3{font-size:22px;font-weight:900;margin-bottom:8px}
+  .box p,.box li{font-size:16.5px;color:var(--ink-2)}
+  .box ul{padding-left:20px}
+  footer{padding:36px 0 60px;color:var(--ink-2);font-size:15px;border-top:3px solid var(--ink)}
+
+  @media (max-width:760px){
+    body{font-size:17px}
+    .board{grid-template-columns:repeat(4,1fr)}
+    .month{min-height:auto}
+    .count{margin-left:0;width:100%}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="tag">保溫計畫 2026.08–2027.12</span>
+    <h1>先讓人想來，<br>再讓人留下</h1>
+    <p class="lead">第一期團隊退場後活動就停了。這一年的順序很清楚：活動先夠吸引人，人來了才有社群；社群裡自然會冒出不錯的人，其中一部分再走向社團或自辦活動。52 場活動、6 條主軸、三代同場，林口元素加分。</p>
+    <div class="meta">
+      <div><b>場域</b>　日日習之所、人人喫茶店、戶外公共空間</div>
+      <div><b>活動期</b>　2027.01–2027.12</div>
+      <div><b>目標</b>　至少 32 場活動、建立居民社群、培力 5 個社團</div>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <h2>三層，一層一層來</h2>
+    <p class="sub">不是每場活動都要變社團。先把人吸引來，再讓他們留下來變成社群，最後才從社群裡找人、找題目，走向社團或自辦活動。</p>
+    <div class="rules" style="margin-bottom:40px">
+      <div class="rule" style="border-color:var(--eat)"><h3>第一層｜吸引來</h3><p>標題要讓人一看就想報名，內容當場就有成就感、有東西帶走。這是全部 44 場的底線。</p></div>
+      <div class="rule" style="border-color:var(--smell)"><h3>第二層｜留下來</h3><p>同一主題辦兩到三場、建群組、給固定聚的時間，讓來過的人有理由再來、認識彼此。</p></div>
+      <div class="rule" style="border-color:var(--see)"><h3>第三層｜走下去</h3><p>從社群裡找出愛帶頭的人，邀請他們當桌長、隊長、店長；準備好的，再談社團或自辦一場。</p></div>
+    </div>
+    <h2 style="font-size:28px">每場活動先過這四關</h2>
+    <div class="rules">
+      <div class="rule"><h3>三代都有角色</h3><p>孩子做什麼、大人做什麼、長輩做什麼，事先寫好。沒有三種角色的活動不排。</p></div>
+      <div class="rule"><h3>當場就有成就感</h3><p>第一堂鼓就合奏、第一堂茶就泡出一杯、多肉當天就帶一盆回家。不安排「先學理論」的課。</p></div>
+      <div class="rule"><h3>有東西帶得走</h3><p>一支影片、一根杖、一包茶、一盆多肉、一道菜的食譜。累積成年底成果展。</p></div>
+      <div class="rule"><h3>留一個再來的理由</h3><p>結尾用 4F 回饋聊十分鐘，加群組、預告下一場、問「誰想一起準備」。不強推社團，讓人自己說想做什麼。</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="board-wrap">
+  <div class="wrap">
+    <h2>一整年的活動看板</h2>
+    <p class="sub">點主軸或月份可以篩選。每月第 1 個週末固定在戶外，第 3 個週三晚上固定在喫茶店，居民不用看海報也知道有活動。</p>
+    <div class="legend" id="legend">
+      <button data-cat="all" class="on">全部</button>
+      <button data-cat="看看">看看｜短影音</button>
+      <button data-cat="聽聽">聽聽｜鼓、戲、故事</button>
+      <button data-cat="走走">走走｜健走、運動</button>
+      <button data-cat="吃吃">吃吃｜媽媽廚藝</button>
+      <button data-cat="聞聞">聞聞｜茶、花草、多肉</button>
+      <button data-cat="動動">動動｜手作、桌遊、親子</button>
+    </div>
+    <div class="board" id="board"></div>
+    <div class="rhythm">
+      <div><b>每月第 1 個週末｜戶外</b><p>健走杖團、非洲鼓快閃、親子體能、野餐、觀星。天氣不好就改喫茶店。</p></div>
+      <div><b>每月第 3 個週三晚上｜喫茶店</b><p>品茶、花草茶、故事夜、桌遊夜。由社團輪值店長。</p></div>
+      <div><b>不固定｜日日習之所</b><p>鼓、戲、料理、手作、多肉、短影音工作坊，一個月至少一場。</p></div>
+    </div>
+  </div>
+</div>
+
+<section id="list">
+  <div class="wrap">
+    <h2>52 場活動</h2>
+    <p class="sub">每張卡片寫了為什麼吸引人、三代各做什麼、可以長成什麼。有「林口」標記的是在地元素加分場；有「幸福到你家」標記的是從區公所課程借來再改過的。</p>
+    <div class="filters" id="filters">
+      <span>對象</span>
+      <button data-aud="all" class="on">全部</button>
+      <button data-aud="親子">親子</button>
+      <button data-aud="嬰幼兒">嬰幼兒</button>
+      <button data-aud="長者">長者</button>
+      <button data-aud="全齡">全齡</button>
+      <button data-aud="林口">林口加分</button>
+      <button data-aud="幸福到你家">幸福到你家</button>
+      <span class="count" id="count"></span>
+    </div>
+    <div class="cards" id="cards"></div>
+    <div class="empty" id="empty">這個組合沒有活動，換一個篩選看看。</div>
+  </div>
+</section>
+
+<section style="background:#F1EDE2">
+  <div class="wrap">
+    <h2>讓人想來、留下來的設計</h2>
+    <p class="sub">貫穿全年的機制，不綁定社團；加上林口在地元素當加分項。</p>
+    <div class="hl">
+      <article style="border-top-color:var(--move)"><h3>林口元素怎麼加分</h3><p>不是每場都要在地，但放對地方會很有記憶點：<b>紅土台地</b>——泥染布巾、紅土陶珠；<b>磚仔窯</b>——當年四十多座磚窯的故事走讀；<b>竹林山觀音寺</b>——春天賞櫻健走、竹杖出隊的第一站；<b>百年子弟戲、九大軒社</b>——鑼鼓身段體驗，秋天一起去子弟戲文化節看戲；<b>台地茶園</b>——手揉茶時講林口早年的茶。</p></article>
+      <article><h3>社宅短影音頻道</h3><p>不拍照、拍影片。居民自營 IG／YouTube，一年 30 支以上：阿嬤的手路菜一鏡到底、鼓的合奏、子弟戲、健走杖出隊、親子尋寶。</p><p><b>為什麼吸引人</b>：年輕人和孩子本來就在拍，長輩是最好的主角。每場指定一位「今日攝影師」由居民輪流。</p></article>
+      <article><h3>兩種鼓聲：非洲鼓 × 子弟戲</h3><p>一個外來、一個在地，都是不看譜打了就會。非洲鼓負責把人「吵」下樓（戶外快閃），子弟戲負責把長輩的記憶接回來，長輩變老師。</p><p><b>成果展</b>：兩種鼓合奏開場。</p></article>
+      <article><h3>竹杖健走團</h3><p>先自己做杖、再用自己的杖走、走完蓋章。杖上刻名字。</p><p><b>為什麼吸引人</b>：自己做的比發的更會拿出來用。對長輩是肌力與防跌，對孩子是探險道具，對大人是親子時間。</p></article>
+      <article><h3>多肉在社宅長大</h3><p>2 月組盆帶回家，6 月葉插繁殖交換，養活的人把「小孩」分給鄰居。喫茶店窗台變成社宅多肉牆。</p><p><b>為什麼吸引人</b>：好養、好看、有「分株送人」的社交動作，是最自然的交朋友方式。</p></article>
+      <article><h3>寶寶爬爬趴 × 親子二手市集</h3><p>0–3 歲共學給白天在家的新手爸媽一個「下樓的理由」；二手市集「換物不換錢」，童裝玩具一季一換。</p><p><b>為什麼吸引人</b>：這群人最需要鄰居、也最容易被活動漏掉。</p></article>
+      <article><h3>茶席走出去</h3><p>喫茶店的茶席推車推到中庭、推到某一棟一樓大廳，一張布一壺茶四個杯，30 分鐘。喝的是鄰居做的花草茶。</p><p><b>據點活絡</b>：不是把人拉進去，是把據點推出去。</p></article>
+      <article><h3>保溫存摺</h3><p>參加一場蓋一章。集滿 5 章：優先參加社團孵化週，成為社團核心成員時啟動金加碼 500 元。</p><p><b>為什麼有效</b>：參與直接掛勾社團補助，來活動的人知道自己在為社團累積資本。</p></article>
+      <article><h3>社團孵化週（3 月、9 月）</h3><p>說明會改成一週：週一到週四每晚 45 分鐘快閃體驗（鼓、茶、杖、桌遊、廚藝各一晚），週五才是說明會＋填意向。</p><p><b>為什麼有效</b>：先體驗再決定，意向書填寫率遠高於單場說明會。</p></article>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>從參加者到社群，再到帶頭的人</h2>
+    <p class="sub">四步，每一步都可以停。停在「社群」也很好；願意往前的人，團隊再一步一步退到後面。</p>
+    <div class="path">
+      <div><b>來一次</b><p>被標題吸引來，當場帶東西回家，蓋一個保溫存摺的章。</p></div>
+      <div><b>再來一次</b><p>同主題第二場、加群組、固定聚。認識了三個以上鄰居，就算留下來了。</p></div>
+      <div><b>幫個忙</b><p>當今日攝影師、鼓隊隊長、茶席店長、健走小隊長、桌長。團隊在這一步看見誰有意願、誰有魅力。</p></div>
+      <div><b>自己辦</b><p>想繼續的人，選一條：申請社團補助，或只是自辦一場活動。第一場居民主辦，團隊只在場不主導。</p></div>
+    </div>
+    <table>
+      <thead><tr><th>主題線</th><th>先變成什麼社群</th><th>再往前可以是</th></tr></thead>
+      <tbody>
+        <tr><td><b>非洲鼓</b></td><td>鼓隊群組、固定練鼓時段</td><td>非洲鼓社（音樂才藝）</td></tr>
+        <tr><td><b>媽媽廚藝</b></td><td>食譜交換群組、便當菜互助</td><td>廚藝社，或只是每季一次的一家一菜</td></tr>
+        <tr><td><b>竹杖健走 / 運動</b></td><td>每週固定健走隊、律動時段</td><td>健走社（運動競技），或衛生所健康促進據點班</td></tr>
+        <tr><td><b>茶、花草茶、多肉</b></td><td>喫茶店固定聚、多肉交換群</td><td>茶友社，或喫茶店輪值店長</td></tr>
+        <tr><td><b>子弟戲</b></td><td>學員與軒社的連結</td><td>加入既有軒社，或社宅子弟戲小隊</td></tr>
+        <tr><td><b>桌遊、療癒手作</b></td><td>桌長群、手作群</td><td>桌遊社，或喫茶店固定桌遊夜</td></tr>
+        <tr><td><b>嬰幼兒共學、親子二手</b></td><td>爸媽群組（最容易自然成形）</td><td>親子共學社，或自辦換物市集</td></tr>
+        <tr><td><b>短影音</b></td><td>社宅頻道小編群</td><td>短影音社，或成為所有活動的紀錄志工</td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top:14px;color:var(--ink-2);font-size:16.5px">補助每半年 3000 元，建議明訂可用項目（材料、場布、講師車馬費、成果展），第一次申請只要一張 A4。目標仍是 5 個社團，但來源不限定哪一條線，看哪裡的人先熟起來。</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>跟《幸福到你家 2.0+》怎麼結合</h2>
+    <p class="sub">區公所這套課程有 15 個開課單位、台電促協金支應、開放社區選課。對保溫計畫來說是三件事：直接引進、借它的格式、把單堂升級成系列。</p>
+    <div class="grid2">
+      <div class="box" style="border-color:var(--see)"><h3>直接引進，免費又現成</h3><ul>
+        <li><b>愛迪樂｜舞動人生</b>：四堂一組，直接當運動線的固定時段</li>
+        <li><b>義消｜CPR / AED / 哈姆立克</b>：最實用、三代都想學</li>
+        <li><b>運動中心｜居家肌力＋器材教學</b>：社宅若有健身房，先開箱</li>
+        <li><b>林口有機村｜栽菇</b>、<b>綠耕｜多肉</b>：植栽線現成講師</li>
+        <li><b>社大｜萬花筒、手縫布作、歌曲律動</b></li>
+        <li><b>法鼓山｜律動瑜珈、品茶品人生</b>：可接茶線</li>
+      </ul><p style="margin-top:10px">做法：社宅登記為「選課社區」，把想要的堂次排進看板；一堂課只要一次接洽。</p></div>
+      <div class="box" style="border-color:var(--eat)"><h3>借它的格式</h3><ul>
+        <li><b>衛教藏在手作裡</b>：「從齒健康 × 鑰匙圈」這種組合最聰明——大家是為手作來的，順便把衛教聽完。我們的版本：竹杖 × 防跌、便當菜 × 血糖、花草茶 × 睡眠、栽菇 × 飲食纖維。</li>
+        <li><b>節慶掛勾</b>：母親節花藝、新春吊飾——日期本身就是理由。我們的版本：開春年菜、端午家鄉味、中秋觀星、聖誕暖場。</li>
+        <li><b>四堂一組、選四堂</b>：同主題連續辦，第二堂開始就是社群。</li>
+        <li><b>單位輪流開課</b>：15 個單位各出一兩堂，計畫團隊不用自己撐全年。</li>
+      </ul></div>
+      <div class="box" style="border-color:var(--smell)"><h3>把單堂升級成系列＋社群</h3><p>幸福到你家的課多半是「上完就走」的單堂。保溫計畫的差別是在後面接一段：</p><ul>
+        <li>多肉植栽（單堂）→ 組盆、交換日、養菇日記、喫茶店多肉牆</li>
+        <li>桌遊生命智慧（單堂）→ 阿公 vs 小孫子對戰夜、社宅盃、桌長群</li>
+        <li>粉彩／禪繞（單堂）→ 喫茶店固定「安靜一小時」</li>
+        <li>手縫布作（單堂）→ 紅土泥染布巾、茶席布、成果展場布</li>
+        <li>品茶品人生（單堂）→ 盲飲、手揉茶、花草茶配方、冬日茶會</li>
+      </ul></div>
+      <div class="box" style="border-color:var(--move)"><h3>幸福到你家沒有、我們才有的</h3><ul>
+        <li>非洲鼓、子弟戲——有聲音、會把人吵下樓</li>
+        <li>短影音、社宅頻道——年輕人與孩子的入口</li>
+        <li>嬰幼兒共學、親子二手市集——最容易被漏掉的族群</li>
+        <li>竹杖健走團、賞櫻健走、磚仔窯走讀——把人帶到戶外</li>
+        <li>一鍋湯分給誰、茶席走出去——從活動變互助</li>
+      </ul><p style="margin-top:10px">這幾條線是社宅自己的招牌，區公所的課程負責補人、補講師。</p></div>
+    </div>
+  </div>
+</section>
+
+<section style="background:#F1EDE2">
+  <div class="wrap">
+    <h2>誰來幫忙、據點怎麼用</h2>
+    <div class="grid2">
+      <div class="box"><h3>地方資源</h3><ul>
+        <li><b>林口區公所《幸福到你家》</b>：15 個開課單位、台電促協金支應，社宅登記為選課社區，直接排堂次</li>
+        <li><b>林口社區大學</b>：非洲鼓、茶道、療癒手作、導覽員培訓——社宅作為社大教學點</li>
+        <li><b>醒吾科大 USR</b>：短影音剪輯教學、聲音地圖、成果展影像——一學期一個任務</li>
+        <li><b>林口九大軒社</b>：子弟戲授課，社宅提供場地與新血；秋天帶居民去子弟戲文化節</li>
+        <li><b>茶農、竹藝工作室、農會、多肉園</b>：材料與講師，可延伸成小旅行</li>
+        <li><b>區公所、里辦公室</b>：一鍋湯分送名單、宣傳、動員</li>
+        <li><b>衛生所、社區照顧據點</b>：健走杖、老歌律動、跌倒預防</li>
+        <li><b>物業</b>：花草採集、鼓聲時段、二手市集場地事先同意</li>
+      </ul><p style="margin-top:10px">原則：每個單位一年一個固定節目，不做一次性邀請。</p></div>
+      <div class="box"><h3>三個據點</h3><ul>
+        <li><b>日日習之所</b>：工作坊與成果展主場。牆上有食譜卡牆、一面「杖牆」寄放健走杖、一台平板循環播社宅短影音。每週一個社團自由使用時段。</li>
+        <li><b>人人喫茶店</b>：茶、花草茶、多肉牆、桌遊、故事夜。每月第 3 個週三固定有人在，社團輪值店長，茶席每季走出去一次。</li>
+        <li><b>戶外公共空間</b>：每月第 1 個週末固定活動。設「今天中庭有什麼」小黑板，居民也可以寫。</li>
+      </ul></div>
+      <div class="box"><h3>前置期 2026.09–12</h3><ul>
+        <li><b>10 月</b>：居民達人普查——會打鼓、會泡茶、會做竹工、看過子弟戲、養多肉、常拍影片的人</li>
+        <li><b>11 月</b>：第一期社團回訪＋軒社、茶農、竹藝工作室接洽</li>
+        <li><b>12 月</b>：暖場用「非洲鼓第一堂就合奏」，最有聲音、最容易吸引人；同時發放保溫存摺、公布固定節奏</li>
+      </ul></div>
+      <div class="box"><h3>怎麼知道有沒有效</h3><ul>
+        <li>活動 ≥ 32 場、短影音 ≥ 30 支</li>
+        <li>不重複參與戶數 ≥ 總戶數 20%</li>
+        <li>每場至少兩個年齡層到場</li>
+        <li>存摺 3 章以上的人 ≥ 30%</li>
+        <li>社團 ≥ 5 個，下半年居民自辦 ≥ 5 場</li>
+        <li>≥ 3 個單位有固定節目</li>
+      </ul></div>
+    </div>
+  </div>
+</section>
+
+<footer><div class="wrap">社宅保溫計畫 系列活動設計提案｜依 2026.09.10 執行小組會議建議整理</div></footer>
+
+<script>
+const A = [
+ // 看看｜短影音
+ {m:1, c:"看看", t:"15 秒說社宅：我家窗外", h:"三個技巧當晚就能發第一支，主題就從自家窗戶開始。", r:["孩子出鏡","大人掌鏡","長輩配旁白"], v:"日日習之所→戶外", o:"每戶 1 支影片", k:"社宅頻道小編群", a:["全齡"]},
+ {m:4, c:"看看", t:"一鏡到底：阿嬤的手路菜", h:"不剪接、一次拍完，做菜的人成為主角。", r:["孩子當試吃評審","年輕人掌鏡","阿嬤示範"], v:"日日習之所", o:"社宅食譜影片第 1 集", k:"社宅頻道小編群", a:["全齡","長者"]},
+ {m:6, c:"看看", t:"親子尋寶短影音挑戰", h:"10 張任務卡：找心形葉、找最老的樹、找會唱歌的地方，拍完回來上傳。", r:["孩子找","大人拍","長輩當關主"], v:"戶外", o:"10 支尋寶影片", k:"社宅頻道小編群", a:["親子"]},
+ {m:12,c:"看看", t:"社宅短影音影展", h:"大螢幕放一整年的影片，居民投票最感動、最好笑、最想再看。", r:["孩子頒獎","大人主持","長輩當評審"], v:"日日習之所", o:"影展＋票選", k:"社宅頻道小編群", a:["全齡"]},
+ // 聽聽
+ {m:2, c:"聽聽", t:"非洲鼓：第一堂就合奏", h:"不看譜，口訣「咚—啪—」30 分鐘全場合奏一首。", r:["孩子打小鼓","大人打主鼓","長輩坐著拍鼓面或搖沙鈴"], v:"日日習之所", o:"合奏影片", k:"鼓隊", a:["全齡","長者"]},
+ {m:5, c:"聽聽", t:"非洲鼓中庭快閃：把鄰居吵下樓", h:"第二堂直接在中庭打，圍觀的人一起拍手節奏。", r:["孩子發沙鈴","大人打鼓","長輩指揮拍手"], v:"戶外", o:"快閃 1 場", k:"鼓隊", a:["全齡"]},
+ {m:3, c:"聽聽", t:"子弟戲來了：鑼鼓身段一日體驗", h:"在地軒社老師傅來，試打鑼、拿旗、走一個身段。長輩多半聽過，換他們教年輕人。", r:["孩子拿旗","大人學身段","長輩打鑼鼓、講以前"], v:"日日習之所", o:"體驗影片", k:"子弟戲學員群", a:["全齡","長者"], lk:"百年子弟戲、在地軒社"},
+ {m:8, c:"聽聽", t:"親子扮仙：子弟戲小劇場", h:"學一段簡單的扮仙戲出場，準備成果展演出。", r:["孩子扮仙童","大人扮神仙","長輩敲鑼鼓"], v:"日日習之所", o:"5 分鐘折子", k:"子弟戲小隊", a:["親子","長者"], lk:"子弟戲文化節前暖身"},
+ {m:6, c:"聽聽", t:"鄰居故事夜：一杯茶聽你講古", h:"圍桌講「我怎麼搬到這裡」，提問卡引導，不強迫。", r:["孩子講最喜歡社宅哪裡","大人講搬家","長輩講以前"], v:"喫茶店", o:"錄音存檔", k:"故事夜固定聚", a:["全齡"]},
+ // 走走／運動
+ {m:2, c:"走走", t:"竹林山賞櫻健走：走到觀音寺", h:"櫻花季就在家門口。從社宅走到竹林山觀音寺，看櫻、拜拜、吃一碗熱的再回來。", r:["孩子數櫻花樹","大人帶隊","長輩帶路講廟的故事"], v:"戶外", o:"賞櫻路線圖", k:"健走固定隊", a:["全齡","長者"], lk:"竹林山觀音寺、櫻花季"},
+ {m:10,c:"走走", t:"一起去看子弟戲文化節", h:"8 月學過扮仙的人，秋天一起去看林口九大軒社的正戲，看得懂就不一樣了。", r:["孩子找自己學過的角色","大人帶隊","長輩當解說"], v:"戶外（竹林山觀音寺）", o:"看戲筆記", k:"子弟戲學員群", a:["全齡","長者"], lk:"子弟戲文化節、九大軒社"},
+ {m:1, c:"走走", t:"走出去：社宅方圓一公里", h:"市場、公園、診所、學校、公車站，一起走一次就熟了。", r:["孩子畫地圖","大人記路線","長輩講「以前這裡是」"], v:"戶外", o:"手繪生活地圖", k:"導覽員群", a:["全齡"]},
+ {m:3, c:"走走", t:"老歌律動：不流汗也能動", h:"用大家會唱的老歌帶動作，坐著也能跟，先坐後站。", r:["孩子跟著跳","大人陪","長輩坐著動"], v:"日日習之所", o:"社宅版律動歌單", k:"運動固定時段", a:["長者","全齡"]},
+ {m:4, c:"走走", t:"竹杖健走團：第一次出隊", h:"用自己做的竹杖，學撐、推、上下階三個動作，30 分鐘慢走。", r:["孩子拿短杖當小隊長","大人陪走","長輩用杖走"], v:"戶外", o:"固定健走路線", k:"健走固定隊", a:["長者","全齡"]},
+ {m:7, c:"走走", t:"夏夜觀星散步：關掉手電筒", h:"晚上 8 點認 5 個星座，順便聽蛙、找夜行昆蟲。", r:["孩子找蟲","大人看星座 App","長輩講星星的故事"], v:"戶外", o:"星空觀察卡", k:"夜遊群", a:["親子","全齡"]},
+ {m:9, c:"走走", t:"親子體能闖關：中庭大挑戰", h:"5 個關卡：跳格子、丟沙包、平衡走、拔河、接力，一家一隊。", r:["孩子闖關","大人當隊友","長輩當關主計分"], v:"戶外", o:"闖關卡", k:"運動固定時段", a:["親子"]},
+ {m:10,c:"走走", t:"居民帶路：磚仔窯與紅土的故事", h:"5 月培訓的居民導覽員正式帶團，主題可選林口當年四十多座磚仔窯，團隊退到後面。", r:["孩子當助理","大人導覽","長輩補充故事"], v:"戶外", o:"居民自辦 1 場", k:"導覽員群", a:["全齡"]},
+ {m:5, c:"走走", t:"居民導覽員培訓", h:"與社大合作，教怎麼帶人走：路線、三個故事點、安全。", r:["孩子試聽","大人學帶","長輩提供故事"], v:"日日習之所→戶外", o:"3–5 位導覽員", k:"導覽員群", a:["全齡"]},
+ // 吃吃
+ {m:1, c:"吃吃", t:"開春一家一菜：我家的年菜", h:"每戶帶一道菜（買的也行），說這道菜的來歷。", r:["孩子發「最想學」貼紙","大人帶菜","長輩講來歷"], v:"日日習之所", o:"食譜卡第 1 批", k:"食譜交換群", a:["全齡"]},
+ {m:3, c:"吃吃", t:"媽媽廚藝擂台：10 分鐘上桌", h:"三組達人各教一道 10 分鐘家常菜，分組跟著做，現場拍短影音。", r:["孩子評審","大人跟做","長輩教訣竅"], v:"日日習之所", o:"3 張食譜卡＋影片", k:"食譜交換群", a:["全齡"]},
+ {m:5, c:"吃吃", t:"媽媽廚藝：便當菜一週不重複", h:"專門解決「每天煮什麼」：5 道好做、好帶、孩子肯吃的菜。", r:["孩子試吃","爸媽學","阿嬤示範古早味"], v:"日日習之所", o:"一週便當菜單", k:"食譜交換群", a:["親子"]},
+ {m:7, c:"吃吃", t:"中庭消暑野餐 × 鼓聲", h:"傍晚每戶帶一樣消暑點心，非洲鼓社暖場，接著觀星。", r:["孩子鋪野餐墊","大人帶點心","長輩坐涼椅講古"], v:"戶外", o:"野餐固定模式", k:"野餐固定模式", a:["全齡"]},
+ {m:10,c:"吃吃", t:"秋天的湯：一鍋湯分給誰", h:"多煮一鍋，由參加者分送給獨居或行動不便的鄰居。有人等你的湯，你就會來。", r:["孩子寫卡片","大人煮","長輩指定送給誰"], v:"日日習之所", o:"分送機制", k:"食譜交換群", a:["全齡","長者"]},
+ {m:12,c:"吃吃", t:"食譜書發表 × 圍爐", h:"一整年的食譜卡集結成冊，成果展當天圍爐。", r:["孩子發書","大人煮","長輩簽名"], v:"日日習之所", o:"《社宅食譜》第一版", k:"食譜交換群", a:["全齡"]},
+ // 聞聞｜茶、花草、多肉
+ {m:2, c:"聞聞", t:"品茶盲飲：三杯茶喝出差別", h:"綠茶、烏龍、紅茶盲飲猜茶，用甜／苦／香貼紙投票。", r:["孩子貼貼紙","大人猜茶","長輩講以前怎麼喝"], v:"喫茶店", o:"個人茶味卡", k:"茶友固定聚", a:["全齡"]},
+ {m:2, c:"聞聞", t:"多肉組盆：一盆帶回家", h:"選三種多肉、配土、鋪石，30 分鐘一盆，附「怎麼不養死」卡。", r:["孩子鋪石","大人配土","長輩挑盆命名"], v:"日日習之所", o:"每人一盆", k:"多肉交換群", a:["全齡","親子"]},
+ {m:4, c:"聞聞", t:"手揉茶：自己做的茶帶回家", h:"萎凋、手揉、烘乾，90 分鐘帶回一小包自己做的茶。", r:["孩子揉","大人烘","長輩聞香判斷"], v:"日日習之所", o:"手作茶一包", k:"茶友固定聚", a:["全齡"], lk:"林口台地早年茶園"},
+ {m:5, c:"聞聞", t:"花草茶採集：中庭有什麼能喝", h:"洛神、薄荷、香茅、菊花、桂花，採集、清洗、曬乾。", r:["孩子採","大人洗","長輩認植物"], v:"戶外→喫茶店", o:"乾燥花草素材", k:"茶友固定聚", a:["全齡"]},
+ {m:6, c:"聞聞", t:"多肉交換日：葉插繁殖分享", h:"2 月養活的人帶「小孩」來分給鄰居，喫茶店窗台變多肉牆。", r:["孩子插葉","大人交換","長輩當植物顧問"], v:"喫茶店", o:"社宅多肉牆", k:"多肉交換群", a:["全齡"]},
+ {m:8, c:"聞聞", t:"親子小茶席：茶道課", h:"一張布、一壺、四杯就是一席。結尾互相敬一杯。", r:["孩子學奉茶","大人學泡","長輩當客人"], v:"喫茶店", o:"茶席禮儀卡", k:"茶友固定聚", a:["親子","長者"]},
+ {m:9, c:"聞聞", t:"花草茶配方：我家的茶", h:"用 5 月的素材調配、命名、寫一句話，茶包陳列在喫茶店。", r:["孩子命名","大人調配","長輩試喝"], v:"喫茶店", o:"「我家的茶」茶包", k:"茶友固定聚", a:["全齡"]},
+ {m:12,c:"聞聞", t:"冬日茶會：社團自辦", h:"茶友社與花草茶社自辦，奉茶給成果展所有來賓。", r:["孩子奉茶","大人泡","長輩坐主位"], v:"喫茶店→成果展", o:"社團自辦茶會", k:"茶友固定聚", a:["全齡"]},
+ // 動動｜手作、桌遊、親子
+ {m:3, c:"動動", t:"竹子健走杖製作", h:"量身高裁竹、磨光、裝腳套、纏繩防滑、刻名字，做完當天就能走。順便把防跌與膝蓋保養講完，衛教藏在手作裡。", r:["孩子做短杖或裝飾","大人裁磨","長輩試走"], v:"日日習之所→戶外", o:"每人一支竹杖", k:"健走固定隊", a:["長者","全齡"], lk:"竹林山的竹"},
+ {m:3, c:"動動", t:"林口紅土：泥染布巾", h:"腳下這片紅土可以染布。用紅土泥染出獨一無二的布巾，晾乾就是茶席布。", r:["孩子踩泥","大人染","長輩講以前的磚窯"], v:"戶外→日日習之所", o:"紅土染布巾", k:"手作群", a:["全齡","親子"], lk:"紅土台地、磚仔窯"},
+ {m:4, c:"動動", t:"療癒手作：香氛蠟燭", h:"選香、融蠟、倒模、貼乾燥花，做的時候不講話也沒關係。", r:["孩子貼花","大人倒蠟","長輩選香"], v:"日日習之所", o:"每人一顆蠟燭", k:"手作群", a:["全齡"]},
+ {m:10,c:"動動", t:"療癒手作：羊毛氈小動物", h:"戳戳戳一小時，做一隻自己的小動物，最紓壓。", r:["孩子做簡易版","大人戳","長輩做扁平款"], v:"喫茶店", o:"羊毛氈小物", k:"手作群", a:["全齡"]},
+ {m:5, c:"動動", t:"桌遊夜：阿公 vs 小孫子", h:"5 分鐘學會、不用看字的反應與配對遊戲，長輩與孩子同桌對戰。", r:["孩子對戰","大人當桌長","長輩對戰"], v:"喫茶店", o:"桌長名單", k:"桌長群", a:["親子","長者"]},
+ {m:11,c:"動動", t:"桌遊擂台：社宅盃", h:"三種遊戲、積分制、頒獎，家庭組隊參加。", r:["孩子選手","大人選手","長輩選手"], v:"日日習之所", o:"社宅盃冠軍", k:"桌長群", a:["全齡"]},
+ {m:4, c:"動動", t:"寶寶爬爬趴：0–3 歲共學", h:"鋪墊、感官球、音樂律動，給白天在家的新手爸媽一個下樓的理由。", r:["寶寶爬","爸媽交流","阿公阿嬤幫忙顧"], v:"日日習之所", o:"爸媽群組", k:"爸媽群組", a:["嬰幼兒","親子"]},
+ {m:9, c:"動動", t:"寶寶爬爬趴：感官探索場", h:"米、豆、水、沙的感官箱，玩到滿身也沒關係。", r:["寶寶玩","爸媽陪","阿公阿嬤講育兒經"], v:"日日習之所", o:"感官箱清單", k:"爸媽群組", a:["嬰幼兒","親子"]},
+ {m:6, c:"動動", t:"親子二手市集：換物不換錢", h:"童裝、玩具、繪本用點數交換，帶來一件換一件。", r:["孩子顧攤","大人交換","長輩當收銀"], v:"戶外", o:"換物點數卡", k:"爸媽群組", a:["親子","嬰幼兒"]},
+ {m:11,c:"動動", t:"親子二手市集：冬衣玩具換季", h:"換季前再辦一次，多的捐給社區據點。", r:["孩子顧攤","大人交換","長輩整理捐贈"], v:"日日習之所", o:"捐贈紀錄", k:"爸媽群組", a:["親子"]},
+ {m:8, c:"動動", t:"紙箱小城市：我們的社宅", h:"回收紙箱做社宅模型，孩子做房子、大人做街道。", r:["孩子做房子","大人做街道","長輩說「還缺什麼」"], v:"戶外", o:"社宅紙箱模型", k:"爸媽群組", a:["親子"]},
+ {m:11,c:"動動", t:"成果展布置日：大家一起做", h:"用一整年的作品布置成果展，布置本身就是一場活動。", r:["孩子貼","大人掛","長輩指揮"], v:"日日習之所", o:"成果展場布", k:"所有社團", a:["全齡"]},
+ {m:12,c:"動動", t:"社宅成果展", h:"影展、子弟戲、非洲鼓、健走杖繞場、茶會、圍爐，一天呈現六大主軸，居民主持。", r:["孩子表演","大人主持","長輩壓軸"], v:"三個據點", o:"時光膠囊", k:"所有社團", a:["全齡"]},
+ // 從《幸福到你家》借來、改過的
+ {m:4, c:"動動", t:"蝶古巴特：把回憶貼上袋子", h:"用照片影印和餐巾紙拼貼一個袋子，貼的是自己的故事，下次出門就背它。", r:["孩子選圖","大人貼","長輩講照片裡的人"], v:"日日習之所", o:"拼貼帆布袋", k:"手作群", a:["全齡","長者"], src:"拼貼我的故事、蝶古巴特"},
+ {m:6, c:"動動", t:"森活木作：小花貓與杯墊", h:"磨、拼、上油，一小時做一隻木頭小花貓；杯墊送給喫茶店。", r:["孩子上色","大人組裝","長輩打磨"], v:"日日習之所", o:"木作小物", k:"手作群", a:["親子","全齡"], src:"歐德森活木作"},
+ {m:5, c:"動動", t:"30 分鐘救命課：CPR、AED、哈姆立克", h:"家裡有長輩、有小孩的人最需要。用假人實際壓、實際貼，練到會為止。", r:["孩子學叫人求救","大人練 CPR","長輩學哈姆立克"], v:"日日習之所", o:"急救小卡", k:"社宅急救志工群", a:["全齡","親子"], src:"義消救護大隊"},
+ {m:7, c:"聞聞", t:"和諧粉彩：安靜一小時，一張畫帶回家", h:"用手指抹粉彩，不會畫畫也畫得出來，最適合下班後放空。", r:["孩子自由畫","大人跟主題","長輩畫圓就好"], v:"喫茶店", o:"每人一幅粉彩", k:"手作群", a:["全齡"], src:"療癒生命和諧粉彩"},
+ {m:9, c:"聞聞", t:"歡喜樂栽菇：太空包養菇日記", h:"帶一包回家，兩週後收成，群組裡比誰的菇長得快。", r:["孩子每天噴水","大人記錄","長輩煮菇"], v:"日日習之所", o:"太空包一包＋養菇日記", k:"多肉交換群（植栽線）", a:["親子","全齡"], src:"林口有機村"},
+ {m:11,c:"動動", t:"親子萬花筒：做一支自己的", h:"鏡片、珠子、亮片自己配，轉一下就是自己的星空。", r:["孩子選珠子","大人組鏡筒","長輩試看評分"], v:"日日習之所", o:"萬花筒", k:"爸媽群組", a:["親子","嬰幼兒"], src:"林口社區大學"},
+ {m:6, c:"走走", t:"社宅健身房開箱：器材怎麼用", h:"如果社宅有健身房或器材，請運動中心教練來教一次，之後就有人敢用了。", r:["孩子在旁玩體能","大人學器材","長輩學居家肌力"], v:"社宅健身房", o:"器材使用卡", k:"運動固定時段", a:["全齡","長者"], src:"林口國民運動中心"},
+];
+
+let cat="all", aud="all", month=null;
+const board=document.getElementById('board'), cards=document.getElementById('cards');
+
+// board
+for(let i=1;i<=12;i++){
+  const d=document.createElement('div');d.className='month';d.dataset.m=i;
+  d.innerHTML=`<div class="mh">${i} 月<small>${A.filter(x=>x.m===i).length} 場</small></div>`;
+  A.filter(x=>x.m===i).forEach(x=>{const s=document.createElement('span');s.className='stick';s.dataset.cat=x.c;s.textContent=x.t.split('：')[0];d.appendChild(s);});
+  d.onclick=()=>{month=(month===i)?null:i;render();};
+  board.appendChild(d);
+}
+// cards
+A.forEach(x=>{
+  const c=document.createElement('article');c.className='card';c.dataset.cat=x.c;c.dataset.m=x.m;c.dataset.aud=x.a.concat(x.lk?['林口']:[]).concat(x.src?['幸福到你家']:[]).join(',');
+  c.innerHTML=`<div class="top"><span class="m">${x.m} 月</span><span class="c">${x.c}｜${x.v}</span></div>
+  <div class="body"><h3>${x.t}</h3><p class="hook">${x.h}</p>
+  <ul class="roles"><li><b>孩子</b>${x.r[0]}</li><li><b>大人</b>${x.r[1]}</li><li><b>長輩</b>${x.r[2]}</li></ul>
+  <div class="foot">${x.a.map(t=>`<span class="chip aud">${t}</span>`).join('')}<span class="chip">帶走：${x.o}</span><span class="chip club">可長成：${x.k}</span>${x.lk?`<span class="chip lk">林口｜${x.lk}</span>`:''}${x.src?`<span class="chip src">幸福到你家｜${x.src}</span>`:''}</div></div>`;
+  cards.appendChild(c);
+});
+document.querySelectorAll('#legend button').forEach(b=>b.onclick=()=>{cat=b.dataset.cat;render();});
+document.querySelectorAll('#filters button').forEach(b=>b.onclick=()=>{aud=b.dataset.aud;render();});
+
+function render(){
+  document.querySelectorAll('#legend button').forEach(b=>b.classList.toggle('on',b.dataset.cat===cat));
+  document.querySelectorAll('#filters button').forEach(b=>b.classList.toggle('on',b.dataset.aud===aud));
+  document.querySelectorAll('.month').forEach(m=>m.classList.toggle('on',+m.dataset.m===month));
+  document.querySelectorAll('.stick').forEach(s=>s.classList.toggle('dim',cat!=='all'&&s.dataset.cat!==cat));
+  let n=0;
+  document.querySelectorAll('.card').forEach(c=>{
+    const ok=(cat==='all'||c.dataset.cat===cat)&&(aud==='all'||c.dataset.aud.split(',').includes(aud))&&(month===null||+c.dataset.m===month);
+    c.classList.toggle('hide',!ok); if(ok)n++;
+  });
+  document.getElementById('count').textContent=`顯示 ${n} 場`+(month?`（${month} 月）`:'');
+  document.getElementById('empty').style.display=n?'none':'block';
+  if(month) document.getElementById('list').scrollIntoView({behavior:'smooth',block:'start'});
+}
+render();
+</script>
+</body>
+</html>
